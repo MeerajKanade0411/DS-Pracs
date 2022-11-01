@@ -1,0 +1,190 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+void traverse(struct node *n)
+{
+    printf("\n");
+    while (n != NULL)
+    {
+        printf(" %d -->", n->data);
+        n = n->next;
+    }
+    printf("NULL");
+}
+void count(struct node *n)
+{
+    int count = 0;
+    while (n->next != NULL)
+    {
+        count++;
+        n = n->next;
+    }
+    printf("\nNumber of nodes : %d", count + 1);
+}
+void insertStart(struct node **head_ref, struct node *n)
+{
+    int value;
+    printf("\nEnter value: ");
+    scanf("%d", &value);
+    struct node *new_node = malloc(sizeof(struct node *));
+    new_node->data = value;
+    new_node->next = n;
+    *head_ref = new_node;
+    printf("\n%d inserted", value);
+}
+void insertEnd(struct node *n)
+{
+    int value;
+    struct node *temp = malloc(sizeof(struct node *));
+    temp = n->next;
+    printf("\nEnter value: ");
+    scanf("%d", &value);
+    while (temp != NULL)
+    {
+        temp = temp->next;
+        n = n->next;
+    }
+    struct node *new_node = malloc(sizeof(struct node *));
+    new_node->data = value;
+    new_node->next = NULL;
+    n->next = new_node;
+}
+void insertBefore(struct node *n)
+{
+    int value, count;
+    printf("\nEnter the value you want to insert: ");
+    scanf("%d", &value);
+    printf("\nEnter the number of the node before which you want to insert: ");
+    scanf("%d", &count);
+    for (int i = 1; i < count - 2; i++)
+    {
+        n = n->next;
+    }
+    struct node *new_node = malloc(sizeof(struct node *));
+    new_node->data = value;
+    new_node->next = n->next;
+    n->next = new_node;
+    printf("Data inserted");
+}
+void deleteStart(struct node *n, struct node **head_ref)
+{
+    struct node *temp = n;
+    *head_ref = n->next;
+    free(temp);
+    printf("\nDeleted first node.");
+}
+void deleteEnd(struct node *n)
+{
+    struct node *temp = malloc(sizeof(struct node *));
+    temp = n->next;
+    while (temp->next != NULL)
+    {
+        n = n->next;
+        temp = temp->next;
+    }
+    n->next = NULL;
+    printf("\n%d deleted", temp->data);
+}
+void deleteBefore(struct node *n)
+{
+    int count;
+    int i = 1;
+    struct node *temp = n->next;
+    printf("\nNumber of the node before which you want to delete: ");
+    scanf("%d", &count);
+    while (i != count - 2)
+    {
+        n = n->next;
+        temp = temp->next;
+        i++;
+    }
+    n->next = temp->next;
+}
+void search(struct node *n)
+{
+    int key;
+    int flag = 0;
+    printf("\nWhat data do you want to search for : ");
+    scanf("%d", &key);
+    while (n != NULL)
+    {
+        if (n->data == key)
+            flag = 1;
+        n = n->next;
+    }
+    if (flag == 1)
+        printf("Key exists");
+    else
+        printf("Key does not exist");
+}
+void swap(struct node *a, struct node *b) 
+{ 
+    int temp = a->data; 
+    a->data = b->data; 
+    b->data = temp; 
+}
+void bubbleSort(struct node *start) 
+{ 
+    int swapped, i; 
+    struct node *ptr1; 
+    struct node *lptr = NULL; 
+    if (start == NULL) 
+        return; 
+    do
+    { 
+        swapped = 0; 
+        ptr1 = start; 
+  
+        while (ptr1->next != lptr) 
+        { 
+            if (ptr1->data > ptr1->next->data) 
+            { 
+                swap(ptr1, ptr1->next); 
+                swapped = 1; 
+            } 
+            ptr1 = ptr1->next; 
+        } 
+        lptr = ptr1; 
+    } 
+    while (swapped); 
+}
+void main()
+{
+    struct node *one = malloc(sizeof(struct node *));
+    struct node *two = malloc(sizeof(struct node *));
+    struct node *three = malloc(sizeof(struct node *));
+    struct node *head = malloc(sizeof(struct node *));
+
+    one->data = 1;
+    two->data = 2;
+    three->data = 3;
+
+    one->next = two;
+    two->next = three;
+    three->next = NULL;
+    head = one;
+    traverse(head);
+    insertStart(&head, head);
+    traverse(head);
+    insertStart(&head, head);
+    traverse(head);
+    insertEnd(head);
+    traverse(head);
+    insertBefore(head);
+    traverse(head);
+    count(head);
+    //deleteStart(head, &head);
+    //traverse(head);
+    //deleteEnd(head);
+    //traverse(head);
+    //deleteBefore(head);
+    //traverse(head);
+   // search(head);
+    printf("\n");
+    bubbleSort(head);
+    traverse(head);
+}
