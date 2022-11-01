@@ -1,0 +1,69 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int data;
+    struct node* next;
+};
+
+void enqueue(struct node *n)
+{
+    int value;
+    struct node *temp = malloc(sizeof(struct node *));
+    temp = n->next;
+    printf("\nEnter value: ");
+    scanf("%d", &value);
+    while (temp != NULL)
+    {
+        temp = temp->next;
+        n = n->next;
+    }
+    struct node *new_node = malloc(sizeof(struct node *));
+    new_node->data = value;
+    new_node->next = NULL;
+    n->next = new_node;
+}
+void dequeue(struct node *n, struct node **head_ref)
+{
+    struct node *temp = n;
+    *head_ref = n->next;
+    free(temp);
+    printf("\nDeleted first node.");
+}
+void display(struct node *n)
+{
+    printf("\n");
+    while (n != NULL)
+    {
+        printf(" %d -->", n->data);
+        n = n->next;
+    }
+    printf("NULL");
+}
+void peek(struct node* n){
+    if(n == NULL)
+        return;
+    printf("\nFront : %d",n->data);
+}
+void main(){
+    struct node *one = malloc(sizeof(struct node *));
+    struct node *two = malloc(sizeof(struct node *));
+    struct node *three = malloc(sizeof(struct node *));
+    struct node *head = malloc(sizeof(struct node *));
+
+    one->data = 1;
+    two->data = 2;
+    three->data = 3;
+    
+    one->next = two;
+    two->next = three;
+    three->next = NULL;
+
+    head = one;
+    display(head);
+    enqueue(head);
+    enqueue(head);
+    display(head);
+    dequeue(head,&head);
+    display(head);
+    peek(head);
+}
